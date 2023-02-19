@@ -1,31 +1,31 @@
-const axios = require('axios');
+import axios from 'axios';
 
 export const getRepos = async ({
-    username,
-    page = 1,
-    per_page = 30,
-    setIsLoading = () => {}
-  } = {}) => {
-      try {
-      console.log('network call initiated')
-      const repos = await axios(`https://api.github.com/users/${username}/repos?page=${page}&per_page=${per_page}&sort=updated`);
-      setIsLoading(false)
-      return repos.data
-        .map((repo) => {
-            return {
-                id:repo.id,
-                name: repo.name,
-                url: repo.html_url,
-                description: repo.description,
-                stars: repo.stargazers_count
-            }
-        })
-         .sort((first, second) => second.stars - first.stars
-         
-         )
-         .filter(repo => repo.description)
+    prompt,
+    setIsLoading = () => { }
+} = {}) => {
+    try {
+        console.log('network call initiated')
+        const repos = await axios.request({ method: 'GET', url: `http://localhost:8080/post/query/${prompt}` });
+        setIsLoading(false)
+        console.log(repos.status + "asdads");
+        return repos.data
+
+            .map((repo) => {
+                return {
+                    ID: repo.ID,
+                    CreatedAt: repo.CreatedAt,
+                    Title: repo.Title,
+                    Body: repo.Body
+                }
+            })
+
+            .filter(repo => repo.Title)
     }
-        catch(error) {
-            return []
-        }
+    catch (error) {
+
+        console.log(error)
+
+        return error
     }
+}
