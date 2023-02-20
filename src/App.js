@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     getRepos({ prompt: prompt, setIsLoading }).then(data => setRepos(data));
-  }, [prompt.toLowerCase])
+  }, [prompt])
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
